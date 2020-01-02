@@ -1,5 +1,10 @@
 <script>
   $(function() {
+    $('.new-lesson-button').click(function( event ){
+        var lessonUrl = $( event.target).data('lesson-url');
+        $('#newLessonForm').attr('action', lessonUrl);
+      });
+
     $('.lessons').sortable({
       update: function( event, ui ) {
         $.ajax({
@@ -10,7 +15,19 @@
         });
       }
     });
-   });
+
+    $('.sections').sortable({
+      update: function( event, ui ) {
+        $.ajax({
+          type: 'PUT',
+          url: ui.item.data('update-section-url'),
+          dataType: 'json',
+          data: { section: { row_order_position: ui.item.index () } }
+        });
+      }
+    });
+
+  });
 </script>
 
 <br />
@@ -24,7 +41,7 @@
   <% end %>
   <br />
   <br />
-  <%= link_to 'Preview As Student...', course_path(current_course), class: 'btn btn-warning float-right' %>
+  <%= link_to 'Preview As Student...', course_path(current_course), class: 'btn btn-warning center' %>
   <br class="clr" />
   <br />
   <div class="text-center">
